@@ -1,0 +1,30 @@
+.img_bg {
+	width: 100%;
+	margin-top: 7%;
+}
+
+.top_text {
+    color: #2196f36a;
+    text-align: right;
+    font-size: 12px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.color_btn {
+	padding: 6px; 
+    border: solid #ffffff8a;
+    background-color: transparent;
+    color: #ffffff8a;
+    border-radius: 20px;
+    width: 90px;
+	position: absolute;
+}
+.disp_img_cont {
+	position: relative;
+}
+.color_input {
+    /* display:none; */
+	opacity: 0;
+	position: absolute;
+}

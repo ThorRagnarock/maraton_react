@@ -24,6 +24,7 @@
     border-radius: 20px;
     margin: 15px 0px;
     padding: 6px 0;
+	cursor: pointer;
 }
 .small_text_download {
 	font-size: 14px;
