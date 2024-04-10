@@ -6,6 +6,12 @@ import new_icon from './assets/new.png'
 import v_bullet from './assets/check.png'
 
 function Download(props) {
+
+	function show_popup() {
+		props.show_download_popup_func();
+		// console.log('Download>show_popup');
+	}
+
 	return (
 		<div className={'download_cont ' + (props.comp_side === 'bottom' ? 'border_comp_top' : '')}>
 			
@@ -19,7 +25,8 @@ function Download(props) {
 			<div className='download_desc'>
 				{props.desc}
 			</div>
-			<div className='download_btn'>
+			<div className='download_btn' onClick={show_popup}>
+
 				{props.btn_text}
 			</div>
 

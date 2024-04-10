@@ -1,0 +1,105 @@
+
+.overlay_wrapper {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+	/* direction:rtl; */
+
+}
+
+.overlay {
+    background-color: #3e3e3e82;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+}
+
+.download_pop_cont {
+	width: 45%;
+    height: 240px;
+    background-color: white;
+    position: absolute;
+    top: 30%;
+	border-radius: 10px;
+	padding: 10px;
+	/* display: flex; */
+}
+
+.download_popup_close {
+	cursor: pointer;
+}
+
+.download_popup_top_div {
+	background-image: url('./assets/Downloads\ Folder.png');
+	background-repeat: no-repeat;
+	
+    position: relative;
+    width: 75px;
+    height: 75px;
+    top: -50px;
+    left: 50%;
+
+	background-color: white;
+    transform: translateX(-50%);
+    box-shadow: 3px 3px 20px -8px;
+    background-position: 14px 14px;
+	background-size: 47px;
+    border-radius: 15px;
+	
+}
+
+.download_popup_title {
+	font-size: 42px;
+    font-family: 'Aduma';
+    text-align: center;
+    margin-top: -40px;
+    color: #00007a;
+}
+
+.download_popup_subtitle {
+    font-size: 15px;
+    /* font-family: 'Aduma'; */
+    text-align: center;
+    margin-top: 7px;
+    color: #00007a;
+	direction:rtl;
+}
+
+.not_robot_cont {
+	margin-top: 12px;
+    direction: rtl;
+    margin-right: 35px;
+}
+
+.not_robot {
+    margin-right: 50px;
+    width: 13px;
+    height: 13px;
+}
+
+.approve_button_cont {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.big_b {
+    padding: 7px;
+    border-radius: 20px;
+    width: 35%;
+    font-family: 'Aduma';
+    font-size: 16px;
+    border: solid;
+    background-color: white;
+}
+
+
+.cancel_btn {}
+.approve_btn {
+	color: white;
+	border: solid transparent;
+	background: rgb(103,58,183);
+	background: linear-gradient(90deg, rgba(103,58,183,1) 10%, rgba(33,150,243,1) 92%);
+}

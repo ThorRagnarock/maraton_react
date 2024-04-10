@@ -38,12 +38,20 @@
 }
 
 .upload_btn {
-    /* top: 20px;
-    left: 65px;
-    position: absolute; */
     margin-left: 20px;
 	background-image: url('./assets/Upload.png');
 }
+
+
+.upload_btn_text {
+    color: #ffffff96;
+    font-size: 12px;
+    direction: rtl;
+    position: absolute;
+    top: 65px;
+    left: 150px;
+}
+
 
 .content_div {
 	display: flex;
@@ -72,9 +80,11 @@
     justify-content: space-evenly;
 }
 .content_left_middle {
-	width: 100%;
+    width: 100%;
     height: 78%;
-	background-color: #161B21;
+    background-color: #161B21;
+    display: flex;
+    align-items: center;
 }
 .content_left {
 	/* border: 1px solid white; */
@@ -135,6 +145,12 @@ div.tabs_cont > div {
     background-image: url('./assets/eula.png');
 }
 
+.overlay_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .overlay {
     background-color: #3e3e3e82;
     width: 100%;
@@ -145,13 +161,12 @@ div.tabs_cont > div {
 }
 .show_eula {
     background-color: white;
-    /* display: block; */
+    /* display: block; */     /* left: 121px; */
     z-index: 2;
-    height: 565px;
+    height: 573px;
     position: absolute;
     top: 27px;
-    left: 121px;
-    width: 762px;
+    width: 782px;
     border-radius: 23px;
     padding: 20px;
 }
