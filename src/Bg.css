@@ -50,9 +50,12 @@
     position: absolute;
     top: 65px;
     left: 150px;
+    /* 235px */
 }
 
-
+.upload_btn_text_nudge {    
+    left: 235px;
+}
 .content_div {
 	display: flex;
 	justify-content: space-evenly;
@@ -182,4 +185,19 @@ div.tabs_cont > div {
     justify-content: space-around;
     align-items: center;
     padding-top: 8px;
+}
+
+
+.upload_input {
+    display: none;
+}
+
+.err_msg {
+    color: yellow;
+    position: absolute;
+    top: 62px;
+    left: 147px;
+    font-size: 11px;
+    border: solid yellow;
+    padding: 2px;
 }

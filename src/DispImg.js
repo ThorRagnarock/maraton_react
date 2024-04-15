@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 
 import img_bg from './assets/img.png'
 import './DispImg.css'
@@ -12,17 +12,15 @@ function DispImg(props) {
 	return (
 		<>
 			<div className='disp_img_cont'>
-				{props.comp_type !== 'orig_comp' ?
-					<>
-						<div className='disp_img_opts'>
-							<div className='top_text'>זכור להוריד את הקבצים שלך: הם ימחקו אוטומטית כשתצא מהדף</div>
+				{props.comp_type !=='orig_comp' ?
+					<><div className='disp_img_opts'>
+						<div className='top_text'>זכור להוריד את הקבצים שלך: הם ימחקו אוטומטית כשתצא מהדף</div>
 
-							<button className='color_btn' onClick={open_input}>צבע רקע</button>
-							<input type='color' ref={inputElement} className='color_input' />
-
-						</div>
+						<input type='color' ref={inputElement} className='color_input' />
+						<button className='color_btn' onClick={open_input}>צבע רקע</button>
+					</div>
 					</>
-					:
+					: 
 					<></>
 				}
 				<div>
