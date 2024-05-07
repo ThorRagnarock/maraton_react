@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/alt-text */
+import img_bg from './assets/img.png'
 import React, { useRef } from 'react'
 
-import img_bg from './assets/img.png'
 import './DispImg.css'
 
 function DispImg(props) {
@@ -12,19 +13,23 @@ function DispImg(props) {
 	return (
 		<>
 			<div className='disp_img_cont'>
-				{props.comp_type !=='orig_comp' ?
-					<><div className='disp_img_opts'>
-						<div className='top_text'>זכור להוריד את הקבצים שלך: הם ימחקו אוטומטית כשתצא מהדף</div>
-
-						<input type='color' ref={inputElement} className='color_input' />
-						<button className='color_btn' onClick={open_input}>צבע רקע</button>
-					</div>
-					</>
-					: 
-					<></>
-				}
 				<div>
-					<img src={img_bg} alt="banana" className='img_bg' />
+					{
+						props.comp_type !== 'orig_comp'
+							?
+							<>
+								<div className='disp_img_opts'>
+									<div className='top_text'>זכור להוריד את הקבצים שלך: הם ימחקו אוטומטית כשתצא מהדף</div>
+									<input type='color' ref={inputElement} className='color_input' />
+									<button className='color_btn' onClick={open_input}>צבע רקע</button>
+								</div>
+							</>
+							:
+							<></>
+					}
+				</div>
+				<div>
+					<img src={props.img_bg}  className='img_bg' />
 				</div>
 			</div>
 		</>

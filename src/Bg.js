@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 // import logo from './logo.svg';
 import './Bg.css';
 import close from './assets/close.png';
@@ -13,9 +14,7 @@ import DownloadPopup from './DownloadPopup';
 // import { response } from 'express';
 
 function Bg() {
-
 	const inputElement = useRef();
-	
 	const open_input = () => {
 		inputElement.current.click();
 	}
@@ -24,11 +23,10 @@ function Bg() {
 	const [show_eula, setShow_eula] = useState(false);
 	const [show_download_popup, setShow_download_popup] = useState(false);
 	const [show_errors, setShow_errors] = useState(false);
-
+	const [img_bg, setImg_bg] = useState();
 
 	function show_popup_eula() {
 		setShow_eula(!show_eula);
-
 	}
 	function selected(e) {
 		// setSelected_tab(!selected_tab);
@@ -40,37 +38,40 @@ function Bg() {
 	}
 
 	function show_download_popup_func() {
-		console.log('Bg>show_dnld_popup_fnc');
 		setShow_download_popup(!show_download_popup);
-	}  //this exact function is being called from the "Downloads" obj, runs practically here, and returns to it's last anchor-here
-
+	}  	//this exact function is being called from the "Downloads" obj, 
+	//runs practically here, and returns to it's last anchor-here
 
 	function uploadFile(e) {
 		let file = e.target.files[0];
-		if ((file.type === 'image/jpeg' || file.type === 'image/png') + file.size <= 10000000) 
-		{
-			setShow_errors(false);
+		// debugger;
+
+
+		if ((file.type == 'image/jpeg' || file.type == 'image/png') && file.size <= 10000000) {
+
+			// setShow_errors(false);
 
 			let formData = new FormData();
-			formData.append('fileImg', file)
+			formData.append('fileImg', e.target.files[0]);
 
-			let headers = {
-				'Content-Type': 'multipart/form-data'
-			}
-
+			let headers = { 'Content-Type': 'multipart/form-data' };
+			
 			axios.post('http://localhost:5100/upload_img', formData, headers)
 				.then(response => {
-					console.log(response.data)
+					setImg_bg(`http://localhost:5100/${response.data.file}`);
+					
+					console.log('New image background URL:', img_bg);
+					console.log('response.data: ' + response.data);
 				})
 				.catch(error => {
 					console.log(error)
 				})
+
 		} else {
 			setShow_errors(true);
 		}
-
-
 	}
+
 
 
 	return (
@@ -79,13 +80,9 @@ function Bg() {
 				<div className="header_title">העלאת תמונה כדי להסיר את הרקע</div>
 				<img src={close} className="close_top" alt="alt prop" />
 
-
 				{/* this is stupid. I could do it with a single button... but ok */}
 				<div className="upload_btn gray_btn" onClick={open_input} >העלאת תמונה</div>
-				<input type='file' onChange={uploadFile} ref={inputElement} className='upload_input' />
-				{/* #############  */}
-
-				{/* <div className={'upload_btn_text '}>פורמטים נתמכים: jpeg, png</div> */}
+				<input type='file' onChange={uploadFile} ref={inputElement} className='upload_input' /> {/* #############  */}
 				{
 					!show_errors ?
 						<>
@@ -100,6 +97,7 @@ function Bg() {
 				}
 
 				<div className='content_div'>
+
 					<div className='content_left'>
 						<div className='tabs_cont'>
 							<div className={'text_bg_no_bg ' + (selected_tab === true ? 'border_bottom_selected' : '')} onClick={selected}>הוסר הרקע</div>
@@ -108,8 +106,15 @@ function Bg() {
 
 						{/* and if !"text_bg_no_bg border_bottom_selected" than onClick={selected}  */}
 						<div className='content_left_middle'>
-							{selected_tab === true ? <DispImg comp_type='no_bg_comp' /> : <DispImg comp_type='orig_comp' />}
+							{/* #######   THIS IS THE IMAGE   ######  */}
+							{
+								selected_tab == true ?
+									<DispImg comp_type='no_bg_comp' img_bg={img_bg} />
+									:
+									<DispImg comp_type='orig_comp' img_bg={img_bg} />
+							}
 						</div>
+
 						<footer className='footer_left_content'>
 							<div className='footer_text'>
 								ע״י העלאת תמונה אתה מסכים לתנאים ולהגבלות. אתר זה מוגן וחלים בו הגבלות פרטיות ותנאי השירות
