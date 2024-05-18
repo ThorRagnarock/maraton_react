@@ -23,7 +23,10 @@ function Bg() {
 	const [show_eula, setShow_eula] = useState(false);
 	const [show_download_popup, setShow_download_popup] = useState(false);
 	const [show_errors, setShow_errors] = useState(false);
-	const [img_bg, setImg_bg] = useState();
+	const [img_bg, setImg_bg] = useState('');
+	const [img_bg_no_bg, setImg_bg_no_bg] = useState('');
+	const [showProgressBar, setShowProgressBar] = useState(false);
+	const [progressBarPercent, setProgressBarPercent] = useState(0);
 
 	function show_popup_eula() {
 		setShow_eula(!show_eula);
@@ -43,11 +46,13 @@ function Bg() {
 	//runs practically here, and returns to it's last anchor-here
 
 	function uploadFile(e) {
+		setShowProgressBar(!showProgressBar);
 		let file = e.target.files[0];
+		const serverUrl =  'http://localhost:5100/';
 		// debugger;
 
 
-		if ((file.type == 'image/jpeg' || file.type == 'image/png') && file.size <= 10000000) {
+		if ((file.type == 'image/jpeg' || file.type == 'image/png') && file.size <= 100000000) {
 
 			// setShow_errors(false);
 
@@ -55,21 +60,25 @@ function Bg() {
 			formData.append('fileImg', e.target.files[0]);
 
 			let headers = { 'Content-Type': 'multipart/form-data' };
-			
-			axios.post('http://localhost:5100/upload_img', formData, headers)
+
+			axios.post(serverUrl + 'upload_img', formData, headers)
 				.then(response => {
-					setImg_bg(`http://localhost:5100/${response.data.file}`);
-					
-					console.log('New image background URL:', img_bg);
-					console.log('response.data: ' + response.data);
+					setImg_bg(serverUrl + `${response.data}`);
+					setImg_bg_no_bg(serverUrl + `no_bg_${response.data}`);
+
+					e.target.value = null;
+					//console.log('New image background URL:', img_bg); console.log('response.data: ' + response.data.file);
 				})
 				.catch(error => {
-					console.log(error)
-				})
+					console.log(error);
+					setShowProgressBar(!showProgressBar);
 
+				})
 		} else {
 			setShow_errors(true);
 		}
+		setShowProgressBar(!showProgressBar);
+
 	}
 
 
@@ -93,7 +102,6 @@ function Bg() {
 							<div className={'upload_btn_text upload_btn_text_nudge'}>פורמטים נתמכים: jpeg, png</div>
 							<div className='err_msg'>פורמט לא נתמך</div>
 						</>
-					// + (show_errors !== true ?  '' : 'upload_btn_text_nudge')
 				}
 
 				<div className='content_div'>
@@ -102,18 +110,29 @@ function Bg() {
 						<div className='tabs_cont'>
 							<div className={'text_bg_no_bg ' + (selected_tab === true ? 'border_bottom_selected' : '')} onClick={selected}>הוסר הרקע</div>
 							<div className={'text_bg_orig ' + (selected_tab !== true ? 'border_bottom_selected' : '')} onClick={selected}>מקורי</div>
-						</div>
-
-						{/* and if !"text_bg_no_bg border_bottom_selected" than onClick={selected}  */}
-						<div className='content_left_middle'>
-							{/* #######   THIS IS THE IMAGE   ######  */}
+						</div> {/* and if !"text_bg_no_bg border_bottom_selected" than onClick={selected}  */}
+						
+						<div className='content_left_middle'> {/* #######   THIS IS THE IMAGE   ######  */}
 							{
 								selected_tab == true ?
-									<DispImg comp_type='no_bg_comp' img_bg={img_bg} />
+									<DispImg comp_type='no_bg_comp' img_bg={img_bg_no_bg} />
 									:
 									<DispImg comp_type='orig_comp' img_bg={img_bg} />
 							}
 						</div>
+						{
+							showProgressBar ? 
+								<div className='loadingBar'> {/** progress bar */}
+									{/* <progress value={40} max={100} className='progressHTML'> </progress> */}
+									<div className='loadingBarPercent'>
+										{progressBarPercent}
+									</div>
+								</div>
+								:<></>
+						}
+						
+
+
 
 						<footer className='footer_left_content'>
 							<div className='footer_text'>

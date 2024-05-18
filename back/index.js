@@ -3,43 +3,37 @@ const app = express();
 const cors = require('cors'); //cross origin request sharing
 
 app.use(cors());
-
 const fileupload = require('express-fileupload');
 app.use(fileupload());
 
-app.use('/no_bg_images', express.static('no_bg_images'));
-app.use('/uploaded_img', express.static('uploaded_img'));
+app.use(express.static('no_bg_images'));
+app.use(express.static('uploaded_img'));
 
-//that helps to reach directly to the no_bg_images
-//means that http://localhost:5000/ takes directly to \no_bg_images\
+const sent_to_api = require('./send_to_api')
 
-const send_to_api = require('./send_to_api')
 
 app.post('/upload_img', function (req, res) {
-	console.log("posting from back: ", req.files);
 
-	const imageFile = req.files.fileImg;
-	// const imageSavePath = `/uploaded_img/${imageFile.name}`
-	const imagePath = `${__dirname}/uploaded_img/${imageFile.name}`;
+	const d = new Date();
+	let time = d.getTime();
 
-	// console.log("This is the image file...? :", imageFile)
 
-	imageFile.mv(imagePath, err => {
+	let imageFile = req.files.fileImg;
+	let imagePath = `${__dirname}/uploaded_img/${time}${imageFile.name}`;
+
+	imageFile.mv(imagePath, async err => {
 		if (err) {
 			return res.status(500).send(err);
 		}
-		//"(error, resultPath)" is what is sent/revieved as the callback
-		send_to_api(imagePath, imageFile.name, (error, resultPath) => {
-			if (error) {
-				res.status(500).send(error);
-			} else {
-				res.json({ file: resultPath });
-				console.log("back end is working fine..? : ", imageFile.name);
-				console.log("imagePath: ", { file: imagePath });
-			}
-		})		// looks like back is working fine
-	})
-})
+
+
+
+		await sent_to_api(imagePath, time + req.files.fileImg.name); //here also supposed to go the callback
+		res.send(`${time}${req.files.fileImg.name}`)
+
+		console.log("imagePath: ", { file: imagePath });
+	});
+});
 console.log('server running... ')
 
 app.listen(5100);
@@ -47,8 +41,8 @@ app.listen(5100);
 
 
 
-
-
+//that helps to reach directly to the no_bg_images
+//means that http://localhost:5000/ takes directly to \no_bg_images\
 
 // clg for console.log(object);
 // clo for console.log('object :', object);
@@ -58,8 +52,3 @@ app.listen(5100);
 // clt for console.table(object);
 // cin for console.info(object);
 // cco for console.count(label);
-
-
-
-// res.json({file: `uploaded_img/${req.body.fileImg.name}`});
-// console.log(res.json);
