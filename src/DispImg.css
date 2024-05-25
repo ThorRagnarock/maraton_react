@@ -1,6 +1,6 @@
 .img_bg {
     max-height: 355px;
-    margin-top:1.9%;
+    margin-top: 1.9%;
 }
 
 .top_text {
@@ -17,7 +17,7 @@
 .color_btn {
     padding: 6px;
     border: 4px inset #ffffff8a;
-    background-color: transparent;
+    background-color: #161B21; /* transparent */
     color: #ffffff8a;
     border-radius: 13px;
     width: 90px;
@@ -45,4 +45,15 @@
     position: absolute;
     top: 200px;
     left: 37px;
+}
+.color_span {
+    /* border: 1px solid white; */
+    /* padding-right: 15px; */
+    margin-left: 3px;
+    position: absolute;
+    background: transparent;
+    border-radius: 0 8px 8px 0;
+    width: 15px;
+    height: 27px;
+    top: 4px;
 }

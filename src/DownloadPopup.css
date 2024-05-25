@@ -105,3 +105,9 @@
 	background: rgb(103,58,183);
 	background: linear-gradient(90deg, rgba(103,58,183,1) 10%, rgba(33,150,243,1) 92%);
 }
+
+.not_robot_error {
+    color: red;
+    font-weight: bold;
+    /* line-height: 30px; */
+}

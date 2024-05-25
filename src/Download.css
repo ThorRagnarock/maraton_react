@@ -17,14 +17,23 @@
 }
 .download_btn {
 	color: #03A9F4;
-    text-align: center;
     /* font-family: 'Aduma'; */
-    font-size: 14px;
     border: 1px solid #03A9F4;
-    border-radius: 20px;
-    margin: 15px 0px;
-    padding: 6px 0;
 	cursor: pointer;
+}
+
+.default_btn {
+	text-align: center;
+	font-size: 14px;
+	border-radius: 20px;
+	margin: 15px 0px;
+    padding: 6px 0;
+}
+
+.disabled_btn {
+	border: 1px solid gray;
+	color: gray;
+	cursor:not-allowed;
 }
 .small_text_download {
 	font-size: 14px;

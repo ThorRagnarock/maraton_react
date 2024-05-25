@@ -7,7 +7,7 @@ import DispImg from './DispImg';
 import banner from './assets/banner.png';
 import logo from './assets/logo.png';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import DownloadPopup from './DownloadPopup';
 
@@ -25,8 +25,18 @@ function Bg() {
 	const [show_errors, setShow_errors] = useState(false);
 	const [img_bg, setImg_bg] = useState('');
 	const [img_bg_no_bg, setImg_bg_no_bg] = useState('');
-	const [showProgressBar, setShowProgressBar] = useState(false);
-	const [progressBarPercent, setProgressBarPercent] = useState(0);
+	const [showProgressBar, setShowProgressBar] = useState(true);
+	
+	
+	const [progressBarPercent, setProgressBarPercent] = useState(0);  ///////////
+	
+	const [selectedBgColor, setSelectBgColor] = useState('');  //aka choose_color
+
+	useEffect(()=>{
+		setShowProgressBar(!showProgressBar);
+	},[img_bg]);  
+	//if what's in the square brackets is used to trigger the "useEffect" I can actually use it 
+	//to manipulate the refreshment of the list on my program... I don't remember that I ever knew it
 
 	function show_popup_eula() {
 		setShow_eula(!show_eula);
@@ -42,8 +52,16 @@ function Bg() {
 
 	function show_download_popup_func() {
 		setShow_download_popup(!show_download_popup);
-	}  	//this exact function is being called from the "Downloads" obj, 
+	}  		
+	//this exact function is being called from the "Downloads" obj, 
 	//runs practically here, and returns to it's last anchor-here
+
+	function  setChooseBgColor_func(color){
+
+		setSelectBgColor(color);
+		
+	}
+	
 
 	function uploadFile(e) {
 		setShowProgressBar(!showProgressBar);
@@ -56,8 +74,12 @@ function Bg() {
 
 			// setShow_errors(false);
 
+			//formData appends the data to the removeBg server: ('varName', valueSource)
 			let formData = new FormData();
 			formData.append('fileImg', e.target.files[0]);
+			if (selectedBgColor != '') formData.append('color', selectedBgColor);
+
+
 
 			let headers = { 'Content-Type': 'multipart/form-data' };
 
@@ -71,16 +93,15 @@ function Bg() {
 				})
 				.catch(error => {
 					console.log(error);
-					setShowProgressBar(!showProgressBar);
+					// setShowProgressBar(!showProgressBar);
 
 				})
 		} else {
 			setShow_errors(true);
 		}
-		setShowProgressBar(!showProgressBar);
+		// setShowProgressBar(!showProgressBar);
 
 	}
-
 
 
 	return (
@@ -115,7 +136,7 @@ function Bg() {
 						<div className='content_left_middle'> {/* #######   THIS IS THE IMAGE   ######  */}
 							{
 								selected_tab == true ?
-									<DispImg comp_type='no_bg_comp' img_bg={img_bg_no_bg} />
+									<DispImg comp_type='no_bg_comp' img_bg={img_bg_no_bg} setChooseBgColor_func={setChooseBgColor_func}/>
 									:
 									<DispImg comp_type='orig_comp' img_bg={img_bg} />
 							}
@@ -145,9 +166,9 @@ function Bg() {
 					</div>
 					<div className='content_right'>
 						<div className='content_right_middle'>
-							<Download show_download_popup_func={show_download_popup_func} title="תמונה חינם" desc="תצוגה מלאה של תמונה" btn_text="הורד" small_text="האיכות הטובה ביותר עד 0.25 פיקסל" comp_side="top" ></Download>
+							<Download img_bg_no_bg={img_bg_no_bg} show_download_popup_func={show_download_popup_func} title="תמונה חינם" desc="תצוגה מלאה של תמונה" btn_text="הורד" small_text="האיכות הטובה ביותר עד 0.25 פיקסל" comp_side="top" ></Download>
 
-							<Download show_download_popup_func={show_download_popup_func} title="Pro" desc="תמונה מלאה" btn_text="HD הורד" small_text="האיכות הטובה ביותר עד 25 פיקסל" comp_side="bottom" ></Download>
+							<Download img_bg_no_bg={img_bg_no_bg} show_download_popup_func={show_download_popup_func} title="Pro" desc="תמונה מלאה" btn_text="HD הורד" small_text="האיכות הטובה ביותר עד 25 פיקסל" comp_side="bottom" ></Download>
 						</div>
 					</div>
 
@@ -177,7 +198,7 @@ function Bg() {
 					:
 					<></>
 			}
-			{show_download_popup ? <DownloadPopup show_download_popup_func={show_download_popup_func} /> : <></>}
+			{show_download_popup ? <DownloadPopup show_download_popup_func={show_download_popup_func} img_bg_no_bg={img_bg_no_bg}/> : <></>}
 		</div>
 
 	);

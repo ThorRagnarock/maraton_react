@@ -3,13 +3,15 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 
-module.exports = async function send_to_api(imageName_path, image_name, callback) {
-
+module.exports = async function send_to_api(imageName_path, image_name, color) {
+	//now we look in documantation for the color parameter
 	const inputPath = imageName_path;
 	const formData = new FormData();
 
 	formData.append('size', 'auto');
 	formData.append('image_file', fs.createReadStream(inputPath), path.basename(inputPath));
+	formData.append('bg_color', color);
+	
 	////////////////////////////////////
 
 	await axios({
