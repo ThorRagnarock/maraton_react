@@ -18,24 +18,25 @@ function DownloadPopup(props) {
 
 	const shorten_name = image_name.split("/");
 
-
+	// the problem is that "download popup" doesn't download but fetch the image from localhost
 	function download_img() {
 		if (checkbox_state) {
 			fetch(image_name)   //'http://localhost:5100/' + i
-			.then(response => {
-				response.blob().then(blob => {
-					let url = window.URL.createObjectURL(blob);
-					let a = document.createElement('a');
-					a.href = url;
-					a.download = shorten_name[3];
-					a.click();
+				.then(response => {
+					response.blob().then(blob => {
+						let url = window.URL.createObjectURL(blob);
+						let a = document.createElement('a');
+						a.href = url;
+						a.download = shorten_name[3];
+						a.click();
+					})
+					//where I need to place the sizing element
+					//window.location.href = response.url;
 				})
-				//window.location.href = response.url;
-			})
-		}  else {
+		} else {
 			setShow_error(true);
 		}
-		
+
 	}
 
 	function checkbox_checked() {
@@ -51,10 +52,8 @@ function DownloadPopup(props) {
 				<div className='download_pop_cont'>
 					{/* <p>DownloadPopup</p> */}
 					<img src={close} alt='thing' className='download_popup_close' onClick={close_popup} />
-					<div className='download_popup_top_div'>
-
-					</div>
-
+					
+					<div className='download_popup_top_div'> </div>
 
 					<div className='download_popup_title'>אישור להורדת תמונה</div>
 					<div className='download_popup_subtitle'>האם להוריד את התמונה?</div>
@@ -63,7 +62,8 @@ function DownloadPopup(props) {
 						<input type='checkbox' id='botcheck' className='checkbox_popup' onChange={checkbox_checked} />
 
 						<label for='botcheck' className='not_robot_text '>אני לא רובוט</label>
-						<img src={not_robot} alt='robo bot' className='not_robot' />						{show__error ? <span className='not_robot_error'>נא אשר אנושיותך</span> : <></>}
+						<img src={not_robot} alt='robo bot' className='not_robot' />
+						{show__error ? <span className='not_robot_error'>נא אשר אנושיותך</span> : <></>}
 
 
 					</div>

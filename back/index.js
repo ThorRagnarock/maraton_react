@@ -18,7 +18,8 @@ app.post('/upload_img', function (req, res) {
 	let time = d.getTime();
 
 	console.log(req.body.color);
-	const color = req.body.color; 
+	const color = req.body.color;
+	const size = req.body.size; // ### SIZE
 
 	let imageFile = req.files.fileImg;
 	let imagePath = `${__dirname}/uploaded_img/${time}${imageFile.name}`;
@@ -30,7 +31,7 @@ app.post('/upload_img', function (req, res) {
 
 
 
-		await sent_to_api(imagePath, time + req.files.fileImg.name, color); //here also supposed to go the callback
+		await sent_to_api(imagePath, time + req.files.fileImg.name, color, size); //callback//size
 		res.send(`${time}${req.files.fileImg.name}`)
 
 		console.log("imagePath: ", { file: imagePath });

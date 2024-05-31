@@ -11,8 +11,6 @@ import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import DownloadPopup from './DownloadPopup';
 
-// import { response } from 'express';
-
 function Bg() {
 	const inputElement = useRef();
 	const open_input = () => {
@@ -27,16 +25,16 @@ function Bg() {
 	const [img_bg_no_bg, setImg_bg_no_bg] = useState('');
 	const [showProgressBar, setShowProgressBar] = useState(true);
 	
-	
-	const [progressBarPercent, setProgressBarPercent] = useState(0);  ///////////
+	///////////const [progressBarPercent, setProgressBarPercent] = useState(0);  
+	// const [selectedSize, setSelectedSize] = useState('');
 	
 	const [selectedBgColor, setSelectBgColor] = useState('');  //aka choose_color
 
 	useEffect(()=>{
 		setShowProgressBar(!showProgressBar);
 	},[img_bg]);  
-	//if what's in the square brackets is used to trigger the "useEffect" I can actually use it 
-	//to manipulate the refreshment of the list on my program... I don't remember that I ever knew it
+	//square brackets' state change triggers "useEffect". I can use it 
+	//to manipulate refreshment of the list on my program? can't recall knowing that
 
 	function show_popup_eula() {
 		setShow_eula(!show_eula);
@@ -53,14 +51,15 @@ function Bg() {
 	function show_download_popup_func() {
 		setShow_download_popup(!show_download_popup);
 	}  		
-	//this exact function is being called from the "Downloads" obj, 
+	//this is being called from the "Downloads" obj, 
 	//runs practically here, and returns to it's last anchor-here
 
 	function  setChooseBgColor_func(color){
-
 		setSelectBgColor(color);
-		
 	}
+	// function chooseSize_func(dl_size){
+	// 	setSelectedSize(dl_size);
+	// }
 	
 
 	function uploadFile(e) {
@@ -77,8 +76,8 @@ function Bg() {
 			//formData appends the data to the removeBg server: ('varName', valueSource)
 			let formData = new FormData();
 			formData.append('fileImg', e.target.files[0]);
-			if (selectedBgColor != '') formData.append('color', selectedBgColor);
-
+			if (selectedBgColor != '') formData.append('color', selectedBgColor); //also need to find a way to send with transp. bg
+			// if (selectedSize != '') formData.append('size', selectedSize);
 
 
 			let headers = { 'Content-Type': 'multipart/form-data' };
@@ -89,7 +88,6 @@ function Bg() {
 					setImg_bg_no_bg(serverUrl + `no_bg_${response.data}`);
 
 					e.target.value = null;
-					//console.log('New image background URL:', img_bg); console.log('response.data: ' + response.data.file);
 				})
 				.catch(error => {
 					console.log(error);
@@ -99,11 +97,7 @@ function Bg() {
 		} else {
 			setShow_errors(true);
 		}
-		// setShowProgressBar(!showProgressBar);
-
 	}
-
-
 	return (
 		<div>
 			<div className="bg_cont">
@@ -132,11 +126,14 @@ function Bg() {
 							<div className={'text_bg_no_bg ' + (selected_tab === true ? 'border_bottom_selected' : '')} onClick={selected}>הוסר הרקע</div>
 							<div className={'text_bg_orig ' + (selected_tab !== true ? 'border_bottom_selected' : '')} onClick={selected}>מקורי</div>
 						</div> {/* and if !"text_bg_no_bg border_bottom_selected" than onClick={selected}  */}
-						
+
 						<div className='content_left_middle'> {/* #######   THIS IS THE IMAGE   ######  */}
 							{
 								selected_tab == true ?
-									<DispImg comp_type='no_bg_comp' img_bg={img_bg_no_bg} setChooseBgColor_func={setChooseBgColor_func}/>
+									<DispImg
+										comp_type='no_bg_comp'
+										img_bg={img_bg_no_bg}
+										setChooseBgColor_func={setChooseBgColor_func} />
 									:
 									<DispImg comp_type='orig_comp' img_bg={img_bg} />
 							}
@@ -146,7 +143,8 @@ function Bg() {
 								<div className='loadingBar'> {/** progress bar */}
 									{/* <progress value={40} max={100} className='progressHTML'> </progress> */}
 									<div className='loadingBarPercent'>
-										{progressBarPercent}
+										{/* {progressBarPercent} */}
+										39%
 									</div>
 								</div>
 								:<></>
@@ -166,9 +164,25 @@ function Bg() {
 					</div>
 					<div className='content_right'>
 						<div className='content_right_middle'>
-							<Download img_bg_no_bg={img_bg_no_bg} show_download_popup_func={show_download_popup_func} title="תמונה חינם" desc="תצוגה מלאה של תמונה" btn_text="הורד" small_text="האיכות הטובה ביותר עד 0.25 פיקסל" comp_side="top" ></Download>
+							<Download
+								img_bg_no_bg={img_bg_no_bg}
+								show_download_popup_func={show_download_popup_func}
+								dl_size={'preview'}
+								title="תמונה חינם"
+								desc="תצוגה מלאה של תמונה"
+								btn_text="הורד"
+								small_text="האיכות הטובה ביותר עד 0.25 פיקסל"
+								comp_side="top" ></Download>
 
-							<Download img_bg_no_bg={img_bg_no_bg} show_download_popup_func={show_download_popup_func} title="Pro" desc="תמונה מלאה" btn_text="HD הורד" small_text="האיכות הטובה ביותר עד 25 פיקסל" comp_side="bottom" ></Download>
+							<Download
+								img_bg_no_bg={img_bg_no_bg}
+								show_download_popup_func={show_download_popup_func}
+								dl_size={'full'}
+								title="Pro"
+								desc="תמונה מלאה"
+								btn_text="HD הורד"
+								small_text="האיכות הטובה ביותר עד 25 פיקסל"
+								comp_side="bottom" ></Download>
 						</div>
 					</div>
 
@@ -198,7 +212,9 @@ function Bg() {
 					:
 					<></>
 			}
-			{show_download_popup ? <DownloadPopup show_download_popup_func={show_download_popup_func} img_bg_no_bg={img_bg_no_bg}/> : <></>}
+			{show_download_popup ?
+				<DownloadPopup show_download_popup_func={show_download_popup_func} img_bg_no_bg={img_bg_no_bg} />
+				: <></>}
 		</div>
 
 	);
